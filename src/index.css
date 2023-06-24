@@ -4,6 +4,21 @@
 
 @layer base {
    body {
-      @apply min-h-screen;
+      @apply min-h-screen bg-slate-50;
+   }
+   /* #root {
+      padding-top: 4rem;
+   } */
+   .hero_section {
+      @apply flex h-screen justify-center px-[15%] flex-col;
+      background-image: url('assets/hero-image.svg');
+      background-size: contain;
+   }
+   .hero_section h1 {
+      @apply text-[4rem] font-bold;
+      backdrop-filter: blur(2px);
+   }
+   .hero_section p {
+      backdrop-filter: blur(2px);
    }
 }
