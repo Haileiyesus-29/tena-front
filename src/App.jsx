@@ -4,6 +4,7 @@ import NavBar from './layout/NavBar'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
+import Footer from './layout/Footer'
 
 function App() {
    return (
@@ -15,6 +16,7 @@ function App() {
             <Route path='/signup' element={<SignupPage />} />
             <Route path='*' element={<NotFound />} />
          </Routes>
+         <Footer />
       </>
    )
 }
