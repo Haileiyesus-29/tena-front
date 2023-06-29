@@ -1,71 +1,142 @@
-import { Link, NavLink } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useState, useEffect } from 'react'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import axios from 'axios'
+import { setUser, logoutUser } from '../store/reducers/userReducer'
 
 function NavBar() {
-   const { isLoggedIn } = useSelector(store => store.user)
+   const { isLoggedIn, user } = useSelector(store => store.user)
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
+   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+   useEffect(() => {
+      const handleResize = () => {
+         if (window.innerWidth > 800) {
+            setIsMobileMenuOpen(false)
+         }
+      }
+
+      window.addEventListener('resize', handleResize)
+
+      return () => {
+         window.removeEventListener('resize', handleResize)
+      }
+   }, [])
+
+   const handleLogout = async () => {
+      try {
+         const response = await axios.get('http://localhost:5000/api/logout', {
+            withCredentials: true,
+         })
+
+         if (response.status === 200) {
+            dispatch(setUser(null))
+            dispatch(logoutUser())
+            navigate('/')
+         }
+      } catch (error) {
+         console.error('Logout failed', error)
+      }
+   }
+
+   const toggleMobileMenu = () => {
+      setIsMobileMenuOpen(prev => !prev)
+   }
 
    return (
-      <div className='navbar shadow-md px-[10%] fixed z-50 top-0 bg-slate-100 bg-opacity-50 backdrop-blur-sm'>
+      <div className='navbar shadow-md md:px-[10%] px-4 fixed z-50 top-0 bg-slate-100 bg-opacity-50 backdrop-blur-sm'>
          <div className='navbar-start'>
-            <div className='dropdown'>
-               <label tabIndex={0} className='btn btn-ghost lg:hidden'>
-                  <svg
-                     xmlns='http://www.w3.org/2000/svg'
-                     className='h-5 w-5'
-                     fill='none'
-                     viewBox='0 0 24 24'
-                     stroke='currentColor'
-                  >
-                     <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth='2'
-                        d='M4 6h16M4 12h8m-8 6h16'
-                     />
-                  </svg>
-               </label>
-               {isLoggedIn && (
-                  <ul
+            {isLoggedIn && (
+               <div className='dropdown'>
+                  <label
                      tabIndex={0}
-                     className='menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52'
+                     className='btn btn-ghost lg:hidden'
+                     onClick={toggleMobileMenu}
                   >
-                     <li>
-                        <NavLink to={'/'}>Home</NavLink>
-                     </li>
+                     <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        className='h-5 w-5'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        stroke='currentColor'
+                     >
+                        <path
+                           strokeLinecap='round'
+                           strokeLinejoin='round'
+                           strokeWidth='2'
+                           d='M4 6h16M4 12h8m-8 6h16'
+                        />
+                     </svg>
+                  </label>
 
-                     <li>
-                        <NavLink to={'/profile'}>Profile</NavLink>
-                     </li>
-                     <li>
-                        <NavLink to={'/messages'}>Messages</NavLink>
-                     </li>
-                     <li>
-                        <NavLink to={'/appointments'}>Appointments</NavLink>
-                     </li>
-                  </ul>
-               )}
-            </div>
-            <a className='btn btn-ghost normal-case text-xl'>daisyUI</a>
+                  {isMobileMenuOpen && (
+                     <ul className='menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52'>
+                        {user?.accType === 'user' && (
+                           <li>
+                              <NavLink to={'/'} onClick={toggleMobileMenu}>
+                                 Home
+                              </NavLink>
+                           </li>
+                        )}
+                        <li>
+                           <NavLink
+                              className='rounded-full'
+                              to={'/profile'}
+                              onClick={toggleMobileMenu}
+                           >
+                              Profile
+                           </NavLink>
+                        </li>
+                        {/* {user?.accType !== 'hospital' && (
+                           <>
+                              <li>
+                                 <NavLink className='rounded-full' to={'/messages'} onClick={toggleMobileMenu}>
+                                    Messages
+                                 </NavLink>
+                              </li>
+                           </>
+                        )} */}
+                        <li>
+                           <NavLink
+                              to={'/appointments'}
+                              onClick={toggleMobileMenu}
+                           >
+                              Appointments
+                           </NavLink>
+                        </li>
+                     </ul>
+                  )}
+               </div>
+            )}
+            <Link to={'/'} className='btn btn-ghost normal-case text-xl'>
+               Tena
+            </Link>
          </div>
          <div className='navbar-center hidden lg:flex'>
             {isLoggedIn && (
                <ul className='menu menu-horizontal px-1 flex gap-2'>
-                  <li>
-                     <NavLink className='rounded-full' to={'/'}>
-                        Home
-                     </NavLink>
-                  </li>
-
+                  {user?.accType === 'user' && (
+                     <li>
+                        <NavLink className='rounded-full' to={'/'}>
+                           Home
+                        </NavLink>
+                     </li>
+                  )}
                   <li>
                      <NavLink className='rounded-full' to={'/profile'}>
                         Profile
                      </NavLink>
                   </li>
-                  <li>
-                     <NavLink className='rounded-full' to={'/messages'}>
-                        Messages
-                     </NavLink>
-                  </li>
+                  {/* {user?.accType !== 'hospital' && (
+                     <>
+                        <li>
+                           <NavLink className='rounded-full' to={'/messages'}>
+                              Messages
+                           </NavLink>
+                        </li>
+                     </>
+                  )} */}
                   <li>
                      <NavLink className='rounded-full' to={'/appointments'}>
                         Appointments
@@ -76,14 +147,14 @@ function NavBar() {
          </div>
          <div className='navbar-end flex gap-4'>
             {isLoggedIn && (
-               <NavLink
-                  to={'/logout'}
+               <button
                   className='btn btn-primary px-6 py-2 rounded-full'
+                  onClick={handleLogout}
                >
                   Logout
-               </NavLink>
+               </button>
             )}
-            {isLoggedIn || (
+            {!isLoggedIn && (
                <>
                   <NavLink
                      to={'/login'}

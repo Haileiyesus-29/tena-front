@@ -1,6 +1,6 @@
 import Hero from '../layout/Hero'
 
-const HomePage = () => {
+const LandingPage = () => {
    return (
       <>
          <Hero />
@@ -8,4 +8,4 @@ const HomePage = () => {
    )
 }
 
-export default HomePage
+export default LandingPage

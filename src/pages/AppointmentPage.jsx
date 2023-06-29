@@ -1,57 +1,84 @@
-import React from 'react'
-import AppintmentItem from '../layout/AppintmentItem'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import AppointmentItem from '../layout/AppintmentItem'
+import { useSelector } from 'react-redux'
 
 function AppointmentPage() {
+   const [appointments, setAppointments] = useState([])
+   const { isLoggedIn, user } = useSelector(store => store.user)
+
+   useEffect(() => {
+      fetchAppointments()
+   }, [])
+
+   const fetchAppointments = async () => {
+      try {
+         const response = await axios.get('/api/appointments')
+         if (response.status === 200) {
+            setAppointments(response.data)
+         }
+      } catch (error) {
+         console.error('Failed to fetch appointments:', error)
+      }
+   }
+
    return (
       <div className='min-h-screen pt-[5rem] px-[15%]'>
          <div className='flex flex-col'>
-            <div className='overflow-x-auto'>
-               <div className='p-1.5 w-full inline-block align-middle'>
-                  <div className='overflow-hidden border rounded-lg'>
-                     <table className='min-w-full divide-y divide-gray-200'>
-                        <thead className='bg-gray-50'>
+            <div className='-m-1.5 overflow-x-auto'>
+               <div className='p-1.5 min-w-full inline-block align-middle'>
+                  <div className='overflow-hidden'>
+                     <table className='min-w-full divide-y divide-gray-200 dark:divide-gray-700'>
+                        <thead>
                            <tr>
                               <th
                                  scope='col'
-                                 className='px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase '
+                                 className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase'
                               >
-                                 Appointment
+                                 Number
                               </th>
                               <th
                                  scope='col'
-                                 className='px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase '
+                                 className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase'
                               >
-                                 Name
+                                 Date
                               </th>
                               <th
                                  scope='col'
-                                 className='px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase '
+                                 className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase'
                               >
-                                 Doctor
+                                 Hospital
                               </th>
                               <th
                                  scope='col'
-                                 className='px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase '
+                                 className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase'
                               >
-                                 Schedule
+                                 Doctor Name
                               </th>
                               <th
                                  scope='col'
-                                 className='px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase '
+                                 className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase'
                               >
-                                 Delete
+                                 Time
                               </th>
+                              {/* {user?.accType !== 'hospital' && (
+                                 <th
+                                    scope='col'
+                                    className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase'
+                                 >
+                                    Message
+                                 </th>
+                              )} */}
                            </tr>
                         </thead>
-                        <tbody className='divide-y divide-gray-200'>
-                           <AppintmentItem />
-                           <AppintmentItem />
-                           <AppintmentItem />
-                           <AppintmentItem />
-                           <AppintmentItem />
-                           <AppintmentItem />
-                           <AppintmentItem />
-                           <AppintmentItem />
+                        <tbody>
+                           {appointments.map((appointment, index) => (
+                              <AppointmentItem
+                                 key={appointment.id}
+                                 number={index + 1}
+                                 appointment={appointment}
+                              />
+                           ))}
                         </tbody>
                      </table>
                   </div>

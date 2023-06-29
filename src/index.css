@@ -10,12 +10,12 @@
       padding-top: 4rem;
    } */
    .hero_section {
-      @apply flex h-screen justify-center px-[15%] flex-col;
+      @apply flex min-h-screen justify-center px-[15%] py-[6rem] flex-col;
       background-image: url('assets/hero-image.svg');
       background-size: contain;
    }
    .hero_section h1 {
-      @apply text-[4rem] font-bold;
+      @apply lg:text-[4rem] lg:leading-tight text-3xl font-bold;
       backdrop-filter: blur(2px);
    }
    .hero_section p {
