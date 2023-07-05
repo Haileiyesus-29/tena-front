@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Pagination from '../layout/Pagination'
 import MessageItem from '../layout/MessageItem'
 
@@ -14,7 +14,6 @@ function MessagePage() {
             setContacts(data)
             setIsLoading(false)
          } catch (error) {
-            console.log(error)
             setIsLoading(false)
          }
       }
@@ -24,8 +23,8 @@ function MessagePage() {
 
    return (
       <div className='min-h-screen pt-[5rem] px-[15%] pb-[6rem]'>
-         <div className='border bg-slate-100 min-h-[80vh] relative'>
-            <div className='bg-primary text-white p-4 text-center text-lg'>
+         <div className='border bg-slate-100 min-h-[80vh] relative rounded-lg'>
+            <div className='bg-slate-200 text-gray-900 p-4 text-center text-lg rounded-t-lg'>
                All messages
             </div>
             {isLoading ? (
@@ -45,9 +44,6 @@ function MessagePage() {
                   </div>
                </div>
             )}
-            <div className='absolute -bottom-[4rem] w-full flex justify-center'>
-               <Pagination />
-            </div>
          </div>
       </div>
    )

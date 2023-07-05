@@ -23,13 +23,13 @@ function AppointmentPage() {
    }
 
    return (
-      <div className='min-h-screen pt-[5rem] px-[15%]'>
-         <div className='flex flex-col'>
-            <div className='-m-1.5 overflow-x-auto'>
-               <div className='p-1.5 min-w-full inline-block align-middle'>
-                  <div className='overflow-hidden'>
-                     <table className='min-w-full divide-y divide-gray-200 dark:divide-gray-700'>
-                        <thead>
+      <div className='min-h-screen pt-[5rem] px-[15%] '>
+         <div className='flex flex-col bg-gray-100 rounded-lg'>
+            <div className='overflow-x-auto shadow-lg min-h-[70vh]'>
+               <div className='min-w-fullinline-block align-middle'>
+                  <div className='overflow-hidden  rounded-t-lg'>
+                     <table className='min-w-full divide-y  rounded-t-lg   divide-gray-200 dark:divide-gray-700'>
+                        <thead className='bg-gray-300 rounded-t-lg '>
                            <tr>
                               <th
                                  scope='col'
@@ -61,14 +61,14 @@ function AppointmentPage() {
                               >
                                  Time
                               </th>
-                              {/* {user?.accType !== 'hospital' && (
+                              {user?.accType !== 'hospital' && (
                                  <th
                                     scope='col'
                                     className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase'
                                  >
                                     Message
                                  </th>
-                              )} */}
+                              )}
                            </tr>
                         </thead>
                         <tbody>

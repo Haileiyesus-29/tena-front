@@ -45,10 +45,7 @@ function HospitalPage() {
                {hospital.name}
             </div>
             <div>
-               <img
-                  src={hospital.image || 'src/assets/hospital.jpg'}
-                  alt='hospital image'
-               />
+               <img src='src/assets/hospital.jpg' alt='hospital image' />
             </div>
             <div className='py-6 text-center'>
                {hospital.description ||
@@ -79,7 +76,7 @@ function HospitalPage() {
                   Our doctors
                </div>
             </div>
-            <table className='bg-white rounded-md shadow-md w-4/5 mx-auto p-8'>
+            <table className='bg-white rounded-md shadow-md w-4/5 mx-auto p-8 overflow-x-auto'>
                <thead>
                   <tr className='py-2'>
                      <th className='font-semibold text-center'>Number</th>

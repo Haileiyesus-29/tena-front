@@ -10,19 +10,19 @@ function NavBar() {
    const navigate = useNavigate()
    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-   useEffect(() => {
-      const handleResize = () => {
-         if (window.innerWidth > 800) {
-            setIsMobileMenuOpen(false)
-         }
-      }
+   // useEffect(() => {
+   //    const handleResize = () => {
+   //       if (window.innerWidth > 800) {
+   //          setIsMobileMenuOpen(false)
+   //       }
+   //    }
 
-      window.addEventListener('resize', handleResize)
+   //    window.addEventListener('resize', handleResize)
 
-      return () => {
-         window.removeEventListener('resize', handleResize)
-      }
-   }, [])
+   //    return () => {
+   //       window.removeEventListener('resize', handleResize)
+   //    }
+   // }, [])
 
    const handleLogout = async () => {
       try {
@@ -70,43 +70,41 @@ function NavBar() {
                      </svg>
                   </label>
 
-                  {isMobileMenuOpen && (
-                     <ul className='menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52'>
-                        {user?.accType === 'user' && (
-                           <li>
-                              <NavLink to={'/'} onClick={toggleMobileMenu}>
-                                 Home
-                              </NavLink>
-                           </li>
-                        )}
+                  <ul className='menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52'>
+                     {user?.accType === 'user' && (
                         <li>
-                           <NavLink
-                              className='rounded-full'
-                              to={'/profile'}
-                              onClick={toggleMobileMenu}
-                           >
-                              Profile
+                           <NavLink to={'/'} onClick={toggleMobileMenu}>
+                              Home
                            </NavLink>
                         </li>
-                        {/* {user?.accType !== 'hospital' && (
-                           <>
-                              <li>
-                                 <NavLink className='rounded-full' to={'/messages'} onClick={toggleMobileMenu}>
-                                    Messages
-                                 </NavLink>
-                              </li>
-                           </>
-                        )} */}
-                        <li>
-                           <NavLink
-                              to={'/appointments'}
-                              onClick={toggleMobileMenu}
-                           >
-                              Appointments
-                           </NavLink>
-                        </li>
-                     </ul>
-                  )}
+                     )}
+                     <li>
+                        <NavLink
+                           className='rounded-full'
+                           to={'/profile'}
+                           onClick={toggleMobileMenu}
+                        >
+                           Profile
+                        </NavLink>
+                     </li>
+                     <li>
+                        <NavLink
+                           className='rounded-full'
+                           to={'/messages'}
+                           onClick={toggleMobileMenu}
+                        >
+                           Messages
+                        </NavLink>
+                     </li>
+                     <li>
+                        <NavLink
+                           to={'/appointments'}
+                           onClick={toggleMobileMenu}
+                        >
+                           Appointments
+                        </NavLink>
+                     </li>
+                  </ul>
                </div>
             )}
             <Link to={'/'} className='btn btn-ghost normal-case text-xl'>
@@ -116,27 +114,22 @@ function NavBar() {
          <div className='navbar-center hidden lg:flex'>
             {isLoggedIn && (
                <ul className='menu menu-horizontal px-1 flex gap-2'>
-                  {user?.accType === 'user' && (
-                     <li>
-                        <NavLink className='rounded-full' to={'/'}>
-                           Home
-                        </NavLink>
-                     </li>
-                  )}
+                  <li>
+                     <NavLink className='rounded-full' to={'/'}>
+                        Home
+                     </NavLink>
+                  </li>
+
                   <li>
                      <NavLink className='rounded-full' to={'/profile'}>
                         Profile
                      </NavLink>
                   </li>
-                  {/* {user?.accType !== 'hospital' && (
-                     <>
-                        <li>
-                           <NavLink className='rounded-full' to={'/messages'}>
-                              Messages
-                           </NavLink>
-                        </li>
-                     </>
-                  )} */}
+                  <li>
+                     <NavLink className='rounded-full' to={'/messages'}>
+                        Messages
+                     </NavLink>
+                  </li>
                   <li>
                      <NavLink className='rounded-full' to={'/appointments'}>
                         Appointments

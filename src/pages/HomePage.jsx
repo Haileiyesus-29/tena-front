@@ -41,12 +41,12 @@ const HomePage = () => {
       <>
          {isLoggedIn ? (
             <div className='pt-[5rem] px-[2%] md:px-[15%] min-h-screen bg-slate-50 mb-8'>
-               {/* <SearchBox /> */}
+               <SearchBox />
                <div className='flex flex-col items-center gap-3 flex-wrap'>
                   {hospitals.map(hospital => (
                      <Post key={hospital._id} hospital={hospital} />
                   ))}
-                  {/* <Pagination /> */}
+                  <Pagination />
                </div>
             </div>
          ) : (

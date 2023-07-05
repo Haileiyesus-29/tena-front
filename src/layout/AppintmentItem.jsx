@@ -29,16 +29,16 @@ function AppointmentItem({ number, appointment }) {
          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-800'>
             {time}
          </td>
-         {/* {user?.accType !== 'hospital' && (
+         {user?.accType !== 'hospital' && (
             <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-800'>
                <Link
                   to={`/messages/${doctorId}`}
-                  className='text-blue-500 hover:text-blue-700'
+                  className='text-blue-500 hover:text-blue-700 link '
                >
                   Message
                </Link>
             </td>
-         )} */}
+         )}
       </tr>
    )
 }
