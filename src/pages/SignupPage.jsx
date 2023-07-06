@@ -153,6 +153,16 @@ function SignupPage() {
                                  name='address'
                               />
                            </div>
+                           <div className='form-control'>
+                              <label className='label'>
+                                 <span className='label-text'>Description</span>
+                              </label>
+                              <textarea
+                                 placeholder='description'
+                                 className='input input-bordered'
+                                 name='description'
+                              ></textarea>
+                           </div>
                         </>
                      )}
                      <div className='form-control mt-6'>

@@ -8,7 +8,7 @@ function formatDate(dateString) {
 }
 
 function AppointmentItem({ number, appointment }) {
-   const { date, time, doctor, hospital, doctorId } = appointment
+   const { date, time, doctor, hospital, doctorId, userId } = appointment
    const formattedDate = formatDate(date)
    const { user } = useSelector(store => store.user)
 
@@ -24,19 +24,25 @@ function AppointmentItem({ number, appointment }) {
             {hospital}
          </td>
          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-800'>
-            {doctor}
+            {doctor || 'deleted account'}
          </td>
          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-800'>
             {time}
          </td>
          {user?.accType !== 'hospital' && (
             <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-800'>
-               <Link
-                  to={`/messages/${doctorId}`}
-                  className='text-blue-500 hover:text-blue-700 link '
-               >
-                  Message
-               </Link>
+               {doctor ? (
+                  <Link
+                     to={`/messages/${
+                        user._id == doctorId ? userId : doctorId
+                     }`}
+                     className='text-blue-500 hover:text-blue-700 link '
+                  >
+                     Message
+                  </Link>
+               ) : (
+                  ''
+               )}
             </td>
          )}
       </tr>

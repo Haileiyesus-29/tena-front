@@ -34,7 +34,7 @@ function Hospital() {
             </div>
             <div>
                <img
-                  src={hospital.image || 'src/assets/hospital.jpg'}
+                  src={hospital.image || 'src/assets/default_hospital.png'}
                   alt='hospital image'
                />
             </div>

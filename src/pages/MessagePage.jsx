@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import Pagination from '../layout/Pagination'
 import MessageItem from '../layout/MessageItem'
 
 function MessagePage() {
@@ -36,12 +35,10 @@ function MessagePage() {
                   No messages found.
                </div>
             ) : (
-               <div className='flex flex-col'>
-                  <div className='bg-white divide-gray-200'>
-                     {contacts.map(contact => (
-                        <MessageItem key={contact._id} contact={contact} />
-                     ))}
-                  </div>
+               <div className='flex flex-col gap-1'>
+                  {contacts.map(contact => (
+                     <MessageItem key={contact._id} contact={contact} />
+                  ))}
                </div>
             )}
          </div>

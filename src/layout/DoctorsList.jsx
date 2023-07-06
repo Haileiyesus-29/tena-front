@@ -4,7 +4,7 @@ import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-function DoctorsList({ idx, doctor }) {
+function DoctorsList({ idx, doctor, self }) {
    const { name, speciality, _id: id } = doctor
    const { user } = useSelector(store => store.user)
 
@@ -47,7 +47,7 @@ function DoctorsList({ idx, doctor }) {
                </Link>
             </td>
          )}
-         {user?.accType === 'hospital' && (
+         {self && (
             <td className='text-center'>
                <button
                   className='btn-sm btn-primary bg-red-600 hover:bg-red-900 max-w-[5rem] cursor-pointer rounded-lg my-2 inline-block px-4 py-2 text-sm'

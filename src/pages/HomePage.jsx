@@ -18,19 +18,9 @@ const HomePage = () => {
             const response = await axios.get('/api/hospitals')
             setHospitals(response.data)
          } catch (error) {
-            if (
-               error.response &&
-               error.response.data &&
-               Array.isArray(error.response.data.errors)
-            ) {
-               // Display multiple errors using Toastify
-               error.response.data.errors.forEach(errorMsg => {
-                  toast.error(errorMsg)
-               })
-            } else {
-               // Display a generic error message
-               toast.error('An error occurred while fetching hospitals.')
-            }
+            error?.response?.data?.errors.forEach(errorMsg => {
+               toast.error(errorMsg)
+            })
          }
       }
 

@@ -40,17 +40,21 @@ function HospitalPage() {
 
    return (
       <div className='min-h-screen pt-[5rem] px-[15%]'>
-         <div className='border rounded-md bg-slate-100 p-8'>
+         <div className='border rounded-md bg-slate-100 p-8 mb-4'>
             <div className='text-3xl font-semibold text-center'>
                {hospital.name}
             </div>
             <div>
-               <img src='src/assets/hospital.jpg' alt='hospital image' />
+               <img
+                  src={
+                     hospital?.image
+                        ? `/api/profile/${hospital.image}`
+                        : 'src/assets/default_hospital.png'
+                  }
+                  alt='hospital image'
+               />
             </div>
-            <div className='py-6 text-center'>
-               {hospital.description ||
-                  'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid repudiandae eum mollitia magni, id fuga nobis voluptatibus error dolor facere quam tempore molestiae aspernatur repellendus rem ab non ratione cupiditate ea ipsum iste deleniti? Quaerat, autem architecto? Autem repellat nihil cum natus! Laboriosam, iure nostrum rem est magni illum impedit recusandae cupiditate dolor officiis! Nihil?'}
-            </div>
+            <div className='py-6 text-center'>{hospital.description || ''}</div>
             <div className='max-w-lg mx-auto border rounded-lg bg-white p-4 my-6'>
                <div className='flex justify-center gap-10 py-2 font-semibold'>
                   <div className='text-end basis-1/2 shirink-0 '>Address</div>
@@ -108,11 +112,17 @@ function HospitalPage() {
                            key={doctor._id}
                            doctor={doctor}
                            idx={idx}
+                           self={hospitalId === user._id}
                         />
                      ))
                   )}
                </tbody>
             </table>
+            <div className='flex justify-center my-4'>
+               <Link to={'/newdoctor'} className='btn btn-primary'>
+                  add a doctor
+               </Link>
+            </div>
          </div>
       </div>
    )

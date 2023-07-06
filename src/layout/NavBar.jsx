@@ -8,21 +8,6 @@ function NavBar() {
    const { isLoggedIn, user } = useSelector(store => store.user)
    const dispatch = useDispatch()
    const navigate = useNavigate()
-   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-
-   // useEffect(() => {
-   //    const handleResize = () => {
-   //       if (window.innerWidth > 800) {
-   //          setIsMobileMenuOpen(false)
-   //       }
-   //    }
-
-   //    window.addEventListener('resize', handleResize)
-
-   //    return () => {
-   //       window.removeEventListener('resize', handleResize)
-   //    }
-   // }, [])
 
    const handleLogout = async () => {
       try {
@@ -40,20 +25,12 @@ function NavBar() {
       }
    }
 
-   const toggleMobileMenu = () => {
-      setIsMobileMenuOpen(prev => !prev)
-   }
-
    return (
       <div className='navbar shadow-md md:px-[10%] px-4 fixed z-50 top-0 bg-slate-100 bg-opacity-50 backdrop-blur-sm'>
          <div className='navbar-start'>
             {isLoggedIn && (
                <div className='dropdown'>
-                  <label
-                     tabIndex={0}
-                     className='btn btn-ghost lg:hidden'
-                     onClick={toggleMobileMenu}
-                  >
+                  <label tabIndex={0} className='btn btn-ghost lg:hidden'>
                      <svg
                         xmlns='http://www.w3.org/2000/svg'
                         className='h-5 w-5'
@@ -73,36 +50,23 @@ function NavBar() {
                   <ul className='menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52'>
                      {user?.accType === 'user' && (
                         <li>
-                           <NavLink to={'/'} onClick={toggleMobileMenu}>
-                              Home
+                           <NavLink to={'/'}>Home</NavLink>
+                        </li>
+                     )}
+                     <li>
+                        <NavLink className='rounded-full' to={'/profile'}>
+                           Profile
+                        </NavLink>
+                     </li>
+                     {user.accType !== 'hospital' && (
+                        <li>
+                           <NavLink className='rounded-full' to={'/messages'}>
+                              Messages
                            </NavLink>
                         </li>
                      )}
                      <li>
-                        <NavLink
-                           className='rounded-full'
-                           to={'/profile'}
-                           onClick={toggleMobileMenu}
-                        >
-                           Profile
-                        </NavLink>
-                     </li>
-                     <li>
-                        <NavLink
-                           className='rounded-full'
-                           to={'/messages'}
-                           onClick={toggleMobileMenu}
-                        >
-                           Messages
-                        </NavLink>
-                     </li>
-                     <li>
-                        <NavLink
-                           to={'/appointments'}
-                           onClick={toggleMobileMenu}
-                        >
-                           Appointments
-                        </NavLink>
+                        <NavLink to={'/appointments'}>Appointments</NavLink>
                      </li>
                   </ul>
                </div>
@@ -125,11 +89,13 @@ function NavBar() {
                         Profile
                      </NavLink>
                   </li>
-                  <li>
-                     <NavLink className='rounded-full' to={'/messages'}>
-                        Messages
-                     </NavLink>
-                  </li>
+                  {user.accType !== 'hospital' && (
+                     <li>
+                        <NavLink className='rounded-full' to={'/messages'}>
+                           Messages
+                        </NavLink>
+                     </li>
+                  )}
                   <li>
                      <NavLink className='rounded-full' to={'/appointments'}>
                         Appointments

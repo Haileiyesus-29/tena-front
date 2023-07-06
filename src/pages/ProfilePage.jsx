@@ -2,17 +2,15 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
 import { toast } from 'react-toastify'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { setUser } from '../store/reducers/userReducer'
 import axios from 'axios'
 
 function ProfilePage() {
-   const { id } = useParams()
    const { user: currentUser } = useSelector(store => store.user)
    const navigate = useNavigate()
    const dispatch = useDispatch()
 
-   const [user, setUser] = useState(null)
-   const [isLoading, setIsLoading] = useState(true)
    const [
       {
          name: updateName,
@@ -27,34 +25,6 @@ function ProfilePage() {
       speciality: false,
       picture: false,
    })
-
-   useEffect(() => {
-      const fetchUser = async () => {
-         try {
-            let userData
-            if (id) {
-               const response = await fetch(`/api/doctors/${id}`)
-               userData = await response.json()
-            } else {
-               const response = await fetch(`/api/users/${currentUser._id}`)
-               userData = await response.json()
-            }
-
-            if (!userData) {
-               // toast.error('User not found')
-               navigate('/')
-            } else {
-               setUser(userData)
-            }
-            setIsLoading(false)
-         } catch (error) {
-            setIsLoading(false)
-            navigate('/')
-         }
-      }
-
-      fetchUser()
-   }, [id, currentUser, navigate])
 
    const showToastSuccess = message => {
       toast.success(message, {
@@ -84,7 +54,7 @@ function ProfilePage() {
             formObject[name] = value
          }
 
-         let apiUrl = `http://localhost:5000/api/${currentUser.accType}s/me`
+         let apiUrl = `/api/${currentUser.accType}s/me`
 
          const response = await axios.put(apiUrl, formObject, {
             withCredentials: true,
@@ -94,7 +64,6 @@ function ProfilePage() {
             e.target.querySelector('input').value = ''
             showToastSuccess('Profile update successful')
             dispatch(setUser(response.data))
-            navigate('/')
          } else {
             showToastErrors(['Profile update failed'])
          }
@@ -103,20 +72,44 @@ function ProfilePage() {
       }
    }
 
-   if (isLoading) {
-      return (
-         <div className='min-h-screen pt-[5rem] px-[15%]'>
-            <div>Loading...</div>
-         </div>
-      )
+   const handlePictureUpdate = async e => {
+      e.preventDefault()
+      try {
+         const form = e.target
+         const formData = new FormData(form)
+         formData.append('image', formData.get('image')[0]) // Retrieve the picture file from the form data
+
+         const response = await axios.put('/api/profile', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+         })
+
+         if (response.status === 200) {
+            e.target.reset()
+            showToastSuccess('Profile update successful')
+            dispatch(setUser(response.data))
+         } else {
+            showToastErrors(['Profile update failed'])
+         }
+      } catch (error) {
+         showToastErrors(error.response?.data?.errors)
+      }
    }
-   const { name, email, speciality, accType } = user
+
+   const { name, email, speciality, image } = currentUser
    return (
       <div className='min-h-screen pt-[5rem] px-[15%]'>
          <div className='bg-slate-100 p-8 flex gap-6 rounded-2xl shadow-lg flex-col my-4  lg:flex-row'>
             <ToastContainer />
             <div className='basis-1/2 grow-0 rounded-lg overflow-hidden shadow-sm'>
-               <img src='src/assets/hospital.jpg' alt='image' className='' />
+               <img
+                  src={
+                     image
+                        ? `/api/profile/${image}`
+                        : 'src/assets/default_user.png'
+                  }
+                  alt='image'
+                  className=''
+               />
                <div
                   className='link hover:link-primary text-lg p-4'
                   onClick={() =>
@@ -128,11 +121,12 @@ function ProfilePage() {
                   change profile picture
                </div>
                {updatePicture && (
-                  <form onSubmit={handleSubmit} className=''>
+                  <form onSubmit={handlePictureUpdate} className=''>
                      <input
                         type='file'
                         placeholder='update picture'
-                        name='speciality'
+                        name='image'
+                        accept='image/jpeg, image/jpg, image/png, image/gif'
                         className='file-input file-input-sm mx-4'
                      />
                      <input
@@ -247,12 +241,16 @@ function ProfilePage() {
                      />
                   </form>
                )}
-               <div className='flex p-4'>
-                  <span className='basis-4/12 shrink-0 '>Account type</span>
-                  <span className='basis-7/12 font-semibold capitalize'>
-                     {accType}
-                  </span>
-               </div>
+               {currentUser.accType === 'hospital' && (
+                  <div className='flex p-4'>
+                     <Link
+                        to={`/hospital/${currentUser._id}`}
+                        className='btn-sm btn shadow-sm'
+                     >
+                        Go to account
+                     </Link>
+                  </div>
+               )}
             </div>
          </div>
       </div>

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 
 function AppointmentPage() {
    const [appointments, setAppointments] = useState([])
-   const { isLoggedIn, user } = useSelector(store => store.user)
+   const { user } = useSelector(store => store.user)
 
    useEffect(() => {
       fetchAppointments()
@@ -27,8 +27,8 @@ function AppointmentPage() {
          <div className='flex flex-col bg-gray-100 rounded-lg'>
             <div className='overflow-x-auto shadow-lg min-h-[70vh]'>
                <div className='min-w-fullinline-block align-middle'>
-                  <div className='overflow-hidden  rounded-t-lg'>
-                     <table className='min-w-full divide-y  rounded-t-lg   divide-gray-200 dark:divide-gray-700'>
+                  <div className='rounded-t-lg'>
+                     <table className='min-w-full divide-y  rounded-t-lg  divide-gray-200 dark:divide-gray-700'>
                         <thead className='bg-gray-300 rounded-t-lg '>
                            <tr>
                               <th

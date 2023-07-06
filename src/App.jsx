@@ -13,9 +13,10 @@ import HospitalPage from './pages/HospitalPage'
 import NewAppointmentPage from './pages/NewAppointmentPage'
 import Hospital from './pages/Hospital'
 import NewDoctor from './pages/NewDoctor'
-import UpdateProfile from './pages/UpdateProfile'
+import ChatPage from './pages/ChatPage'
 
 function App() {
+   const { user } = useSelector(store => store.user)
    return (
       <>
          <NavBar />
@@ -25,14 +26,19 @@ function App() {
             <Route path='/login' element={<LoginPage />} />
             <Route path='/signup' element={<SignupPage />} />
             <Route path='/appointments' element={<AppointmentPage />} />
-            <Route path='/messages' element={<MessagePage />} />
+            {user?.accType !== 'hospital' && (
+               <>
+                  <Route path='/messages' element={<MessagePage />} />
+                  <Route path='/messages/:id' element={<ChatPage />} />
+               </>
+            )}
             <Route path='/profile' element={<ProfilePage />} />
-            <Route path='/profile/:id' element={<ProfilePage />} />
+            {/* <Route path='/profile/:id' element={<ProfilePage />} /> */}
             <Route path='/hospital/:id' element={<HospitalPage />} />
             <Route path='/newapp/:id' element={<NewAppointmentPage />} />
             <Route path='/profile' element={<Hospital />} />
             <Route path='/newdoctor' element={<NewDoctor />} />
-            <Route path='/update' element={<UpdateProfile />} />
+            {/* <Route path='/update' element={<UpdateProfile />} /> */}
             <Route path='*' element={<NotFound />} />
          </Routes>
          <Footer />
